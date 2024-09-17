@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compare Rates Today - Cotización de Seguro</title>
+    <meta name="description" content="Obtén una cotización de seguro de auto personalizada en minutos">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        nav {
+            background-color: white;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .phone {
+            color: #4b5563;
+            text-decoration: none;
+        }
+        main {
+            flex-grow: 1;
+            padding: 2rem 0;
+        }
+        .progress {
+            width: 100%;
+            height: 1rem;
+            background-color: #e0e7ff;
+            border-radius: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: #3b82f6;
+            border-radius: 0.5rem;
+            transition: width 0.3s ease;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            max-width: 48rem;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #2563eb;
+            font-size: 1.875rem;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        .subtitle {
+            color: #4b5563;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        h2 {
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .option-btn {
+            padding: 2rem;
+            font-size: 1.25rem;
+            border: 2px solid #3b82f6;
+            background-color: white;
+            color: #3b82f6;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .option-btn:hover {
+            background-color: #eff6ff;
+        }
+        .option-btn.selected {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .assistant-message {
+            display: flex;
+            align-items: center;
+            background-color: #eff6ff;
+            border-radius: 9999px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+        .assistant-avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            margin-right: 1rem;
+        }
+        .assistant-text {
+            font-size: 0.875rem;
+            color: #1e40af;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+        .btn-secondary {
+            background-color: #e5e7eb;
+            color: #374151;
+        }
+        .btn-secondary:hover {
+            background-color: #d1d5db;
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        footer {
+            background-color: #1f2937;
+            color: white;
+            padding: 2rem 0;
+        }
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .footer-section {
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+        @media (min-width: 768px) {
+            .footer-section {
+                width: 30%;
+                margin-bottom: 0;
+            }
+        }
+        .footer-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .footer-links {
+            list-style-type: none;
+            padding: 0;
+        }
+        .footer-links li {
+            margin-bottom: 0.25rem;
+        }
+        .footer-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer-links a:hover {
+            color: #60a5fa;
+        }
+        .footer-bottom {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.875rem;
+            color: #9ca3af;
+        }
+        .congrats {
+            text-align: center;
+        }
+        .congrats h2 {
+            color: #2563eb;
+            font-size: 2.25rem;
+            margin-bottom: 1rem;
+        }
+        .congrats p {
+            font-size: 1.25rem;
+            color: #4b5563;
+            margin-bottom: 2rem;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container nav-content">
+            <img src="/api/placeholder/200/40" alt="Compare Rates Today Logo" width="200" height="40">
+            <a href="tel:1-833-418-1896" class="phone">📞 1-833-418-1896</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div class="card" id="quizCard">
+            <h1>¡Bienvenido a Compare Rates Today!</h1>
+            <p class="subtitle">Estás a minutos de obtener una gran tarifa nueva en tu seguro de auto.</p>
+            
+            <h2 id="question"></h2>
+            
+            <div class="options" id="options"></div>
+
+            <div class="assistant-message">
+                <img src="/api/placeholder/40/40" alt="Avatar" class="assistant-avatar">
+                <p class="assistant-text">Responde estas preguntas para que podamos encontrar las mejores tarifas para ti.</p>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button id="previousBtn" class="btn btn-secondary" disabled>Anterior</button>
+            <button id="nextBtn" class="btn btn-primary" style="display: none;">Finalizar</button>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title">Compare Rates Today</h3>
+                <p>Encuentra las mejores tarifas de seguro de auto.</p>
+            </div>
+            <div class="footer-section">
+                <h3 class="footer-title">Contacto</h3>
+                <p>📞 1-833-418-1896</p>
+                <p>✉️ info@compareratestoday.com</p>
+            </div>
+            <div class="footer-section">
+                <h3 class="footer-title">Enlaces Rápidos</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Sobre Nosotros</a></li>
+                    <li><a href="#">Términos y Condiciones</a></li>
+                    <li><a href="#">Política de Privacidad</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Compare Rates Today. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        const questions = [
+            {
+                question: "¿Vives en Estados Unidos? 🇺🇸",
+                options: ["Sí", "No"]
+            },
+            {
+                question: "¿Estás disconforme con lo que estás pagando actualmente con tu seguro?",
+                options: ["Sí", "No"]
+            },
+            {
+                question: "¿Tienes actualmente un carro?",
+                options: ["Sí", "No"]
+            }
+        ];
+
+        let currentStep = 0;
+        const answers = new Array(questions.length).fill('');
+
+        const progressBar = document.getElementById('progressBar');
+        const quizCard = document.getElementById('quizCard');
+        const questionEl = document.getElementById('question');
+        const optionsEl = document.getElementById('options');
+        const previousBtn = document.getElementById('previousBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        function updateProgress() {
+            progressBar.style.width = `${((currentStep + 1) / questions.length) * 100}%`;
+        }
+
+        function renderQuestion() {
+            questionEl.textContent = questions[currentStep].question;
+            optionsEl.innerHTML = '';
+            questions[currentStep].options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = `option-btn ${answers[currentStep] === option ? 'selected' : ''}`;
+                button.textContent = option;
+                button.onclick = () => selectOption(option);
+                optionsEl.appendChild(button);
+            });
+            previousBtn.disabled = currentStep === 0;
+            nextBtn.style.display = currentStep === questions.length - 1 ? 'block' : 'none';
+            updateProgress();
+        }
+
+        function selectOption(option) {
+            answers[currentStep] = option;
+            renderQuestion();
+            if (currentStep < questions.length - 1) {
+                currentStep++;
+                renderQuestion();
+            }
+        }
+
+        previousBtn.onclick = () => {
+            if (currentStep > 0) {
+                currentStep--;
+                renderQuestion();
+            }
+        };
+
+        nextBtn.onclick = showCongratulations;
+
+        function showCongratulations() {
+            quizCard.innerHTML = `
+                <div class="congrats animate-pulse">
+                    <h2>¡Felicidades! 🎉</h2>
+                    <p>Calificas para mejorar el precio de tu seguro actual.</p>
+                </div>
+                <button id="startAppBtn" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.25rem;">
+                    Comenzar Aplicación
+                </button>
+            `;
+            document.querySelector('.button-group').style.display = 'none';
+            document.getElementById('startAppBtn').onclick = startApplication;
+        }
+
+        function startApplication() {
+            console.log("Iniciando aplicación...", answers);
+            // Aquí puedes agregar la lógica para iniciar la aplicación
+        }
+
+        renderQuestion();
+    </script>
+</body>
+</html>
